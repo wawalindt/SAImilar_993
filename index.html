@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="https://vitejs.dev/logo.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0f0f11" />
+    <meta name="referrer" content="no-referrer" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>SAImilar - AI Movie Recommender</title>
+    <script>
+      (function() {
+        try {
+          // Disable Vite dev-server HMR reconnect loop from reloading the browser page every 25-30s
+          const RealWS = window.WebSocket;
+          if (RealWS) {
+            window.WebSocket = function(url, protocols) {
+              if (protocols === 'vite-hmr' || protocols === 'vite-ping' || (typeof url === 'string' && (url.includes('token=') || url.includes('vite')))) {
+                const dummy = new EventTarget();
+                dummy.readyState = 3; // CLOSED
+                dummy.send = function() {};
+                dummy.close = function() {};
+                return dummy;
+              }
+              return new RealWS(url, protocols);
+            };
+            window.WebSocket.prototype = RealWS.prototype;
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        /* Dark Theme (Default) */
+        --bg: #0f0f11;
+        --surface: #18181b;
+        --surface-hover: #27272a;
+        --text-main: #f4f4f5;
+        --text-muted: #a1a1aa;
+        --border: rgba(255, 255, 255, 0.1);
+        --input-bg: #0f0f11;
+      }
+
+      .light {
+        /* Light Theme */
+        --bg: #f3f4f6;        /* Gray 100 */
+        --surface: #ffffff;   /* White */
+        --surface-hover: #e5e7eb; /* Gray 200 */
+        --text-main: #111827; /* Gray 900 */
+        --text-muted: #6b7280; /* Gray 500 */
+        --border: rgba(0, 0, 0, 0.1);
+        --input-bg: #ffffff;
+      }
+    </style>
+    <script>
+      tailwind.config = {
+        darkMode: 'class', // Enable class-based dark mode if needed, but we use var strategy
+        theme: {
+          extend: {
+            colors: {
+              background: 'var(--bg)',
+              surface: 'var(--surface)',
+              surfaceHover: 'var(--surface-hover)',
+              primary: '#e11d48', // Red-600 ish for cinema feel
+              secondary: '#8b5cf6', // Violet
+              textMain: 'var(--text-main)',
+              textMuted: 'var(--text-muted)'
+            },
+            borderColor: {
+              DEFAULT: 'var(--border)',
+              surfaceHover: 'var(--surface-hover)'
+            },
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "firebase/app": "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js",
+    "firebase/auth": "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js",
+    "firebase/firestore": "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js",
+    "firebase/": "https://aistudiocdn.com/firebase@^12.6.0/"
+  }
+}
+</script>
+</head>
+  <body class="bg-background text-textMain font-sans antialiased overflow-hidden h-screen transition-colors duration-300">
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
